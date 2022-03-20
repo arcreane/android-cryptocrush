@@ -11,6 +11,7 @@
     tools:context=".Game">
 
 
+
     <GridLayout
         android:id="@+id/board"
         android:layout_width="match_parent"
@@ -50,4 +51,5 @@
             android:id="@+id/score"
             android:textColor="#FFFF00"/>
     </LinearLayout>
+
 </LinearLayout>
