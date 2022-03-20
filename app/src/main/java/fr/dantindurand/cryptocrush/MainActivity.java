@@ -2,6 +2,7 @@ package fr.dantindurand.cryptocrush;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.view.View;
 import android.view.Window;
 import android.os.Bundle;
@@ -24,18 +25,8 @@ public class MainActivity extends AppCompatActivity {
         playBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                setContentView(R.layout.game_main);
-                TextView textPage = (TextView)findViewById(R.id.textView);
-                TableLayout table = (TableLayout)findViewById(R.id.tableLayout);
-                Game game = new Game();
-                game.start();
-
-                if(game.gameStatus() == true) {
-                    textPage.setText("started !");
-                    textView.setText("test 1");
-
-                    table.addView(textView);
-                }
+                startActivity(new Intent(MainActivity.this, Game.class));
+                setContentView(R.layout.activity_game);
             }
         });
     }

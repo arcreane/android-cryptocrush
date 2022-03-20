@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CryptoCrush">
         <activity
-            android:name=".MainActivity2"
+            android:name=".Game"
             android:exported="false" />
         <activity
             android:name=".MainActivity"

@@ -6,7 +6,9 @@
         <entry key="app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.2855" />
         <entry key="app/src/main/res/drawable/dash_border.xml" value="0.198" />
         <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.2855" />
+        <entry key="app/src/main/res/layout/activity_game.xml" value="0.33177083333333335" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.16960601806640627" />
+        <entry key="app/src/main/res/layout/activity_main2.xml" value="0.33177083333333335" />
         <entry key="app/src/main/res/layout/dash_border.xml" value="0.1766304347826087" />
         <entry key="app/src/main/res/layout/game_main.xml" value="0.32101338704427085" />
       </map>
