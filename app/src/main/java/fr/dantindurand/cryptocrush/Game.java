@@ -31,10 +31,11 @@ public class Game extends AppCompatActivity {
     int widthOfBlock, noOfBlocks = 8, widthOfScreen;
     ArrayList<ImageView> candy = new ArrayList<>();
     int candyToBeDragged, candyToBeReplaced;
-    int notCandy = R.drawable.ic_launcher_background;
+    int notCandy = R.drawable.transparent;
     Handler mHandler;
     int interval = 100;
     TextView scoreResult;
+    int score = 0;
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -102,6 +103,8 @@ public class Game extends AppCompatActivity {
                         (int) candy.get(x++).getTag() == chosedCandy &&
                         (int) candy.get(x).getTag() == chosedCandy)
                 {
+                    score = score + 3;
+                    scoreResult.setText(String.valueOf(score));
                     candy.get(x).setImageResource(notCandy);
                     candy.get(x).setTag(notCandy);
                     x--;
@@ -113,6 +116,7 @@ public class Game extends AppCompatActivity {
                 }
             }
         }
+        moveDownCandies();
     }
 
     private void checkColumnForThree() {
@@ -125,6 +129,8 @@ public class Game extends AppCompatActivity {
                     (int) candy.get(x+noOfBlocks).getTag() == chosedCandy &&
                     (int) candy.get(x+2*noOfBlocks).getTag() == chosedCandy)
             {
+                score = score + 3;
+                scoreResult.setText(String.valueOf(score));
                 candy.get(x).setImageResource(notCandy);
                 candy.get(x).setTag(notCandy);
                 x = x + noOfBlocks;
@@ -135,9 +141,33 @@ public class Game extends AppCompatActivity {
                 candy.get(x).setTag(notCandy);
             }
         }
-
+        moveDownCandies();
     }
 
+    private void moveDownCandies() {
+        Integer[] firstRow = {0, 1, 2, 3, 4, 5, 6, 7};
+        List<Integer> list = Arrays.asList(firstRow);
+        for (int i = 55; i >= 0; i--) {
+            if( (int) candy.get(i + noOfBlocks).getTag() == notCandy) {
+                candy.get(i + noOfBlocks).setImageResource((int) candy.get(i).getTag());
+                candy.get(i + noOfBlocks).setTag(candy.get(i).getTag());
+                candy.get(i).setImageResource(notCandy);
+                candy.get(i).setTag(notCandy);
+                if(list.contains(i) && (int) candy.get(i).getTag() == notCandy) {
+                    int randomColor = (int) Math.floor(Math.random() * candies.length);
+                    candy.get(i).setImageResource(candies[randomColor]);
+                    candy.get(i).setTag(candies[randomColor]);
+                }
+            }
+        }
+        for (int i = 0; i < 8; i++) {
+            if ((int) candy.get(i).getTag() == notCandy) {
+                int randomColor = (int) Math.floor(Math.random() * candies.length);
+                candy.get(i).setImageResource(candies[randomColor]);
+                candy.get(i).setTag(candies[randomColor]);
+            }
+        }
+    }
 
     Runnable repeatChecker = new Runnable() {
         @Override
@@ -145,6 +175,7 @@ public class Game extends AppCompatActivity {
             try {
                 checkRowForThree();
                 checkColumnForThree();
+                moveDownCandies();
             }finally {
                 mHandler.postDelayed(repeatChecker, interval);
             }
