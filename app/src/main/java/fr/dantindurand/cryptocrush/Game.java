@@ -7,8 +7,10 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.DisplayMetrics;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.GridLayout;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -32,13 +34,16 @@ public class Game extends AppCompatActivity {
     int notCandy = R.drawable.ic_launcher_background;
     Handler mHandler;
     int interval = 100;
+    TextView scoreResult;
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);//will hide the title
+        getSupportActionBar().hide();
         setContentView(R.layout.activity_game);
-
+        scoreResult = findViewById(R.id.score);
         DisplayMetrics displayMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         widthOfScreen = displayMetrics.widthPixels;
@@ -110,11 +115,36 @@ public class Game extends AppCompatActivity {
         }
     }
 
+    private void checkColumnForThree() {
+        for (int i = 0; i < 47; i++) {
+            int chosedCandy = (int) candy.get(i).getTag();
+            boolean isBlank = (int) candy.get(i).getTag() == notCandy;
+
+            int x = i;
+            if((int) candy.get(x).getTag() == chosedCandy && ! isBlank &&
+                    (int) candy.get(x+noOfBlocks).getTag() == chosedCandy &&
+                    (int) candy.get(x+2*noOfBlocks).getTag() == chosedCandy)
+            {
+                candy.get(x).setImageResource(notCandy);
+                candy.get(x).setTag(notCandy);
+                x = x + noOfBlocks;
+                candy.get(x).setImageResource(notCandy);
+                candy.get(x).setTag(notCandy);
+                x = x + noOfBlocks;
+                candy.get(x).setImageResource(notCandy);
+                candy.get(x).setTag(notCandy);
+            }
+        }
+
+    }
+
+
     Runnable repeatChecker = new Runnable() {
         @Override
         public void run() {
             try {
                 checkRowForThree();
+                checkColumnForThree();
             }finally {
                 mHandler.postDelayed(repeatChecker, interval);
             }
