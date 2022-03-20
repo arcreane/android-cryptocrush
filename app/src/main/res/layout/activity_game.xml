@@ -8,7 +8,7 @@
     android:background="@drawable/background_game"
     android:id="@+id/gameLayout"
     android:gravity="center"
-    tools:context=".Game">
+    tools:context=".GameActivity">
 
 
 

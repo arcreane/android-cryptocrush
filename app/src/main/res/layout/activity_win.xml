@@ -6,16 +6,17 @@
     android:layout_height="match_parent"
     android:layout_gravity="center"
     android:background="@drawable/background"
+    android:id="@+id/winLayout"
     tools:context=".MainActivity">
 
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/winTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="350dp"
+        android:layout_marginBottom="460dp"
         android:fontFamily="@font/origin_tech"
-        android:text="Tu as gagner !"
+        android:text=""
         android:textColor="#FFFF00"
         android:textSize="40sp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -23,6 +24,98 @@
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+
+    <TextView
+        android:id="@+id/winDescTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:maxWidth="300dp"
+        android:text=""
+        android:layout_marginTop="10dp"
+        android:letterSpacing="0.1"
+        android:textAlignment="center"
+        android:textColor="#FFFF00"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/winTextView" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:id="@+id/scoreContainer"
+        android:layout_marginBottom="20dp"
+        app:layout_constraintTop_toBottomOf="@+id/winDescTextView">
+        <TextView
+            android:id="@+id/score"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxWidth="300dp"
+            android:text=""
+            android:layout_marginTop="10dp"
+            android:letterSpacing="0.1"
+            android:textAlignment="center"
+            android:textColor="#FFFF00"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/winTextView" />
+        <TextView
+            android:id="@+id/displacement"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxWidth="300dp"
+            android:text=""
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="10dp"
+            android:letterSpacing="0.1"
+            android:textAlignment="center"
+            android:textColor="#FFFF00"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/winTextView" />
+    </LinearLayout>
+
+    <GridLayout
+        android:id="@+id/starsGrid"
+        android:layout_width="200dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="20dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/scoreContainer">
+
+        <ImageView
+            android:id="@+id/star1"
+            android:layout_width="66dp"
+            android:layout_height="wrap_content"
+            android:layout_row="0"
+            android:layout_column="0"
+            app:srcCompat="@drawable/star" />
+
+        <ImageView
+            android:id="@+id/star2"
+            android:layout_width="66dp"
+            android:layout_height="wrap_content"
+            android:layout_row="0"
+            android:layout_column="1"
+            app:srcCompat="@drawable/star" />
+
+        <ImageView
+            android:id="@+id/star3"
+            android:layout_width="66dp"
+            android:layout_height="wrap_content"
+            android:layout_row="0"
+            android:layout_column="2"
+            app:srcCompat="@drawable/star" />
+    </GridLayout>
 
     <Button
         android:id="@+id/replay"
@@ -45,7 +138,7 @@
         android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        app:layout_constraintTop_toBottomOf="@+id/starsGrid" />
 
     <Button
         android:id="@+id/leave"
@@ -69,6 +162,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/replay" />
+
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

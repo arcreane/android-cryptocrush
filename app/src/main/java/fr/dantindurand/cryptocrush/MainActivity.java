@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.Window;
 import android.os.Bundle;
 import android.widget.Button;
-import android.widget.TableLayout;
 import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
@@ -25,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
         playBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(MainActivity.this, Game.class));
+                startActivity(new Intent(MainActivity.this, GameActivity.class));
                 setContentView(R.layout.activity_game);
             }
         });

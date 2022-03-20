@@ -3,29 +3,28 @@ package fr.dantindurand.cryptocrush;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Vibrator;
 import android.util.DisplayMetrics;
-import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.widget.Button;
 import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class Game extends AppCompatActivity {
+public class GameActivity extends AppCompatActivity {
 
-    int[] candies = {
+    public static final String EXTRA_SCORE = "fr.dantindurand.cryptocrush.game.EXTRA_NUMBER";
+    public static final String EXTRA_DISPLACEMENT = "fr.dantindurand.cryptocrush.game.EXTRA_DISPLACEMENT";
+
+    int[] coins = {
             R.drawable.egld,
             R.drawable.binance,
             R.drawable.bitcoin,
@@ -35,15 +34,16 @@ public class Game extends AppCompatActivity {
     };
 
     int widthOfBlock, noOfBlocks = 8, widthOfScreen;
-    ArrayList<ImageView> candy = new ArrayList<>();
-    int candyToBeDragged, candyToBeReplaced;
-    int notCandy = R.drawable.transparent;
+    ArrayList<ImageView> coin = new ArrayList<>();
+    int coinToBeDragged, coinToBeReplaced;
+    int notCoin = R.drawable.transparent;
     Handler mHandler;
     int interval = 100;
     TextView scoreResult;
     int score = 0;
     boolean isWin = false;
     int scoreToWin = (int)Math.floor(Math.random()*(200-100+1)+100);
+    int displacement;
     Vibrator vibrator;
     MediaPlayer beepSoundMP;
     MediaPlayer switchSoundMP;
@@ -71,15 +71,15 @@ public class Game extends AppCompatActivity {
         switchSoundMP = MediaPlayer.create(this, R.raw.whoosh_sound_effect);
         widthOfBlock = widthOfScreen / noOfBlocks;
         createBoard();
-        for (ImageView imageView : candy) {
+        for (ImageView imageView : coin) {
             imageView.setOnTouchListener(new OnSwipeListener(this) {
                 @Override
                 void onSwipeLeft() {
                     super.onSwipeLeft();
                     switchSoundMP.start();
-                    candyToBeDragged = imageView.getId();
-                    candyToBeReplaced = candyToBeDragged - 1;
-                    candyInterchange();
+                    coinToBeDragged = imageView.getId();
+                    coinToBeReplaced = coinToBeDragged - 1;
+                    coinInterchange();
 
                 }
 
@@ -87,27 +87,27 @@ public class Game extends AppCompatActivity {
                 void onSwipeRight() {
                     super.onSwipeRight();
                     switchSoundMP.start();
-                    candyToBeDragged = imageView.getId();
-                    candyToBeReplaced = candyToBeDragged + 1;
-                    candyInterchange();
+                    coinToBeDragged = imageView.getId();
+                    coinToBeReplaced = coinToBeDragged + 1;
+                    coinInterchange();
                 }
 
                 @Override
                 void onSwipeTop() {
                     super.onSwipeTop();
                     switchSoundMP.start();
-                    candyToBeDragged = imageView.getId();
-                    candyToBeReplaced = candyToBeDragged - noOfBlocks;
-                    candyInterchange();
+                    coinToBeDragged = imageView.getId();
+                    coinToBeReplaced = coinToBeDragged - noOfBlocks;
+                    coinInterchange();
                 }
 
                 @Override
                 void onSwipeBottom() {
                     super.onSwipeBottom();
                     switchSoundMP.start();
-                    candyToBeDragged = imageView.getId();
-                    candyToBeReplaced = candyToBeDragged + noOfBlocks;
-                    candyInterchange();
+                    coinToBeDragged = imageView.getId();
+                    coinToBeReplaced = coinToBeDragged + noOfBlocks;
+                    coinInterchange();
                 }
             });
         }
@@ -117,79 +117,79 @@ public class Game extends AppCompatActivity {
 
     private void checkRowForThree() {
         for (int i = 0; i < 62; i++) {
-            int chosedCandy = (int) candy.get(i).getTag();
-            boolean isBlank = (int) candy.get(i).getTag() == notCandy;
+            int chosedCandy = (int) coin.get(i).getTag();
+            boolean isBlank = (int) coin.get(i).getTag() == notCoin;
             Integer[] notValid = {6,7,14,15,22,23,30,31,38,39,46,47,54,55};
             List<Integer> list = Arrays.asList(notValid);
             if(!list.contains(i)) {
                 int x = i;
-                if((int) candy.get(x++).getTag() == chosedCandy && ! isBlank &&
-                        (int) candy.get(x++).getTag() == chosedCandy &&
-                        (int) candy.get(x).getTag() == chosedCandy)
+                if((int) coin.get(x++).getTag() == chosedCandy && ! isBlank &&
+                        (int) coin.get(x++).getTag() == chosedCandy &&
+                        (int) coin.get(x).getTag() == chosedCandy)
                 {
                     changeScore();
 
-                    candy.get(x).setImageResource(notCandy);
-                    candy.get(x).setTag(notCandy);
+                    coin.get(x).setImageResource(notCoin);
+                    coin.get(x).setTag(notCoin);
                     x--;
-                    candy.get(x).setImageResource(notCandy);
-                    candy.get(x).setTag(notCandy);
+                    coin.get(x).setImageResource(notCoin);
+                    coin.get(x).setTag(notCoin);
                     x--;
-                    candy.get(x).setImageResource(notCandy);
-                    candy.get(x).setTag(notCandy);
+                    coin.get(x).setImageResource(notCoin);
+                    coin.get(x).setTag(notCoin);
                 }
             }
         }
-        moveDownCandies();
+        moveDownCoins();
     }
 
     private void checkColumnForThree() {
         for (int i = 0; i < 47; i++) {
-            int chosedCandy = (int) candy.get(i).getTag();
-            boolean isBlank = (int) candy.get(i).getTag() == notCandy;
+            int chosedCandy = (int) coin.get(i).getTag();
+            boolean isBlank = (int) coin.get(i).getTag() == notCoin;
 
             int x = i;
-            if((int) candy.get(x).getTag() == chosedCandy && ! isBlank &&
-                    (int) candy.get(x+noOfBlocks).getTag() == chosedCandy &&
-                    (int) candy.get(x+2*noOfBlocks).getTag() == chosedCandy)
+            if((int) coin.get(x).getTag() == chosedCandy && ! isBlank &&
+                    (int) coin.get(x+noOfBlocks).getTag() == chosedCandy &&
+                    (int) coin.get(x+2*noOfBlocks).getTag() == chosedCandy)
             {
                 changeScore();
 
-                candy.get(x).setImageResource(notCandy);
-                candy.get(x).setTag(notCandy);
+                coin.get(x).setImageResource(notCoin);
+                coin.get(x).setTag(notCoin);
                 x = x + noOfBlocks;
-                candy.get(x).setImageResource(notCandy);
-                candy.get(x).setTag(notCandy);
+                coin.get(x).setImageResource(notCoin);
+                coin.get(x).setTag(notCoin);
                 x = x + noOfBlocks;
-                candy.get(x).setImageResource(notCandy);
-                candy.get(x).setTag(notCandy);
+                coin.get(x).setImageResource(notCoin);
+                coin.get(x).setTag(notCoin);
 
             }
         }
-        moveDownCandies();
+        moveDownCoins();
     }
 
-    private void moveDownCandies() {
+    private void moveDownCoins() {
         Integer[] firstRow = {0, 1, 2, 3, 4, 5, 6, 7};
         List<Integer> list = Arrays.asList(firstRow);
         for (int i = 55; i >= 0; i--) {
-            if( (int) candy.get(i + noOfBlocks).getTag() == notCandy) {
-                candy.get(i + noOfBlocks).setImageResource((int) candy.get(i).getTag());
-                candy.get(i + noOfBlocks).setTag(candy.get(i).getTag());
-                candy.get(i).setImageResource(notCandy);
-                candy.get(i).setTag(notCandy);
-                if(list.contains(i) && (int) candy.get(i).getTag() == notCandy) {
-                    int randomColor = (int) Math.floor(Math.random() * candies.length);
-                    candy.get(i).setImageResource(candies[randomColor]);
-                    candy.get(i).setTag(candies[randomColor]);
+            if( (int) coin.get(i + noOfBlocks).getTag() == notCoin) {
+                coin.get(i + noOfBlocks).setImageResource((int) coin.get(i).getTag());
+                coin.get(i + noOfBlocks).setTag(coin.get(i).getTag());
+                coin.get(i).setImageResource(notCoin);
+                coin.get(i).setTag(notCoin);
+                if(list.contains(i) && (int) coin.get(i).getTag() == notCoin) {
+                    int randomColor = (int) Math.floor(Math.random() * coins.length);
+                    coin.get(i).setImageResource(coins[randomColor]);
+                    coin.get(i).setTag(coins[randomColor]);
                 }
             }
         }
         for (int i = 0; i < 8; i++) {
-            if ((int) candy.get(i).getTag() == notCandy) {
-                int randomColor = (int) Math.floor(Math.random() * candies.length);
-                candy.get(i).setImageResource(candies[randomColor]);
-                candy.get(i).setTag(candies[randomColor]);
+            if ((int) coin.get(i).getTag() == notCoin) {
+                int randomColor = (int) Math.floor(Math.random() * coins.length);
+                coin.get(i).setImageResource(coins[randomColor]);
+                coin.get(i).setTag(coins[randomColor]);
             }
         }
     }
@@ -200,7 +200,7 @@ public class Game extends AppCompatActivity {
             try {
                 checkRowForThree();
                 checkColumnForThree();
-                moveDownCandies();
+                moveDownCoins();
             }finally {
                 mHandler.postDelayed(repeatChecker, interval);
             }
@@ -211,13 +211,14 @@ public class Game extends AppCompatActivity {
         repeatChecker.run();
     }
 
-    private void candyInterchange() {
-        int background = (int) candy.get(candyToBeReplaced).getTag();
-        int background1 = (int) candy.get(candyToBeDragged).getTag();
-        candy.get(candyToBeDragged).setImageResource(background);
-        candy.get(candyToBeReplaced).setImageResource(background1);
-        candy.get(candyToBeDragged).setTag(background);
-        candy.get(candyToBeReplaced).setTag(background1);
+    private void coinInterchange() {
+        int background = (int) coin.get(coinToBeReplaced).getTag();
+        int background1 = (int) coin.get(coinToBeDragged).getTag();
+        coin.get(coinToBeDragged).setImageResource(background);
+        coin.get(coinToBeReplaced).setImageResource(background1);
+        coin.get(coinToBeDragged).setTag(background);
+        coin.get(coinToBeReplaced).setTag(background1);
+        displacement = displacement + 1;
     }
 
     @SuppressLint("SetTextI18n")
@@ -228,8 +229,10 @@ public class Game extends AppCompatActivity {
         scoreResult.setText(String.valueOf(score) + " / " + String.valueOf(scoreToWin));
         if(score >= scoreToWin && !isWin) {
             isWin = true;
-            startActivity(new Intent(Game.this, WinActivity.class));
-            setContentView(R.layout.activity_win);
+            Intent intent = new Intent(this, WinActivity.class);
+            intent.putExtra(EXTRA_SCORE, score);
+            intent.putExtra(EXTRA_DISPLACEMENT, displacement);
+            startActivity(intent);
         }
 
     }
@@ -247,10 +250,10 @@ public class Game extends AppCompatActivity {
             imageView.setLayoutParams(new ViewGroup.LayoutParams(widthOfBlock, widthOfBlock));
             imageView.setMaxHeight(widthOfBlock);
             imageView.setMaxWidth(widthOfBlock);
-            int randomCandy = (int) Math.floor(Math.random() * candies.length);
-            imageView.setImageResource(candies[randomCandy]);
-            imageView.setTag(candies[randomCandy]);
-            candy.add(imageView);
+            int randomCandy = (int) Math.floor(Math.random() * coins.length);
+            imageView.setImageResource(coins[randomCandy]);
+            imageView.setTag(coins[randomCandy]);
+            coin.add(imageView);
             gridLayout.addView(imageView);
         }
 

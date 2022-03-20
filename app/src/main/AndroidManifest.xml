@@ -13,9 +13,10 @@
         android:theme="@style/Theme.CryptoCrush">
         <activity
             android:name=".WinActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:parentActivityName=".GameActivity"/>
         <activity
-            android:name=".Game"
+            android:name=".GameActivity"
             android:exported="false" />
         <activity
             android:name=".MainActivity"
