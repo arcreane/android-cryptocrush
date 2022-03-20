@@ -3,6 +3,7 @@ package fr.dantindurand.cryptocrush;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.DisplayMetrics;
@@ -36,6 +37,9 @@ public class Game extends AppCompatActivity {
     int interval = 100;
     TextView scoreResult;
     int score = 0;
+    MediaPlayer beepSoundMP;
+    MediaPlayer switchSoundMP;
+
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -49,6 +53,8 @@ public class Game extends AppCompatActivity {
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         widthOfScreen = displayMetrics.widthPixels;
         int heightOfScreen = displayMetrics.heightPixels;
+        beepSoundMP = MediaPlayer.create(this, R.raw.beep_sound_effect);
+        switchSoundMP = MediaPlayer.create(this, R.raw.whoosh_sound_effect);
         widthOfBlock = widthOfScreen / noOfBlocks;
         createBoard();
         for (ImageView imageView : candy) {
@@ -56,6 +62,7 @@ public class Game extends AppCompatActivity {
                 @Override
                 void onSwipeLeft() {
                     super.onSwipeLeft();
+                    switchSoundMP.start();
                     candyToBeDragged = imageView.getId();
                     candyToBeReplaced = candyToBeDragged - 1;
                     candyInterchange();
@@ -65,6 +72,7 @@ public class Game extends AppCompatActivity {
                 @Override
                 void onSwipeRight() {
                     super.onSwipeRight();
+                    switchSoundMP.start();
                     candyToBeDragged = imageView.getId();
                     candyToBeReplaced = candyToBeDragged + 1;
                     candyInterchange();
@@ -73,6 +81,7 @@ public class Game extends AppCompatActivity {
                 @Override
                 void onSwipeTop() {
                     super.onSwipeTop();
+                    switchSoundMP.start();
                     candyToBeDragged = imageView.getId();
                     candyToBeReplaced = candyToBeDragged - noOfBlocks;
                     candyInterchange();
@@ -81,6 +90,7 @@ public class Game extends AppCompatActivity {
                 @Override
                 void onSwipeBottom() {
                     super.onSwipeBottom();
+                    switchSoundMP.start();
                     candyToBeDragged = imageView.getId();
                     candyToBeReplaced = candyToBeDragged + noOfBlocks;
                     candyInterchange();
@@ -104,6 +114,7 @@ public class Game extends AppCompatActivity {
                         (int) candy.get(x).getTag() == chosedCandy)
                 {
                     score = score + 3;
+                    beepSoundMP.start();
                     scoreResult.setText(String.valueOf(score));
                     candy.get(x).setImageResource(notCandy);
                     candy.get(x).setTag(notCandy);
@@ -130,6 +141,7 @@ public class Game extends AppCompatActivity {
                     (int) candy.get(x+2*noOfBlocks).getTag() == chosedCandy)
             {
                 score = score + 3;
+                beepSoundMP.start();
                 scoreResult.setText(String.valueOf(score));
                 candy.get(x).setImageResource(notCandy);
                 candy.get(x).setTag(notCandy);
