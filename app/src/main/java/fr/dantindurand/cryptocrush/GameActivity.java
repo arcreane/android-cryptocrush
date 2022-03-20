@@ -224,7 +224,7 @@ public class GameActivity extends AppCompatActivity {
     @SuppressLint("SetTextI18n")
     private void changeScore() {
         score = score + 3;
-        vibrator.vibrate(500);
+        vibrator.vibrate(5);
         beepSoundMP.start();
         scoreResult.setText(String.valueOf(score) + " / " + String.valueOf(scoreToWin));
         if(score >= scoreToWin && !isWin) {
@@ -243,6 +243,7 @@ public class GameActivity extends AppCompatActivity {
         gridLayout.setColumnCount(noOfBlocks);
         gridLayout.getLayoutParams().width = widthOfScreen;
         gridLayout.getLayoutParams().height = widthOfScreen;
+        gridLayout.setBackgroundResource(R.drawable.solid_border);
 
         for (int i = 0; i < noOfBlocks * noOfBlocks; i++) {
             ImageView imageView = new ImageView(this);
