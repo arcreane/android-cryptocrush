@@ -25,12 +25,13 @@ public class GameActivity extends AppCompatActivity {
     public static final String EXTRA_DISPLACEMENT = "fr.dantindurand.cryptocrush.game.EXTRA_DISPLACEMENT";
 
     int[] coins = {
-            R.drawable.egld,
-            R.drawable.binance,
+            R.drawable.augur,
+            R.drawable.cosmos,
             R.drawable.bitcoin,
-            R.drawable.dogecoin,
+            R.drawable.maker,
             R.drawable.ethereum,
-            R.drawable.shibacoin
+            R.drawable.sushiswap,
+            R.drawable.uma
     };
 
     int widthOfBlock, noOfBlocks = 8, widthOfScreen;
