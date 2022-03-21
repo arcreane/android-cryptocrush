@@ -183,7 +183,9 @@ public class GameActivity extends AppCompatActivity {
                     int randomColor = (int) Math.floor(Math.random() * coins.length);
                     coin.get(i).setImageResource(coins[randomColor]);
                     coin.get(i).setTag(coins[randomColor]);
+                    vibrator.vibrate(5);
                 }
+
             }
         }
         for (int i = 0; i < 8; i++) {
@@ -191,6 +193,8 @@ public class GameActivity extends AppCompatActivity {
                 int randomColor = (int) Math.floor(Math.random() * coins.length);
                 coin.get(i).setImageResource(coins[randomColor]);
                 coin.get(i).setTag(coins[randomColor]);
+                vibrator.vibrate(5);
+
             }
         }
     }
@@ -220,12 +224,13 @@ public class GameActivity extends AppCompatActivity {
         coin.get(coinToBeDragged).setTag(background);
         coin.get(coinToBeReplaced).setTag(background1);
         displacement = displacement + 1;
+        vibrator.vibrate(5);
     }
 
     @SuppressLint("SetTextI18n")
     private void changeScore() {
         score = score + 3;
-        vibrator.vibrate(5);
+        vibrator.vibrate(10);
         beepSoundMP.start();
         scoreResult.setText(String.valueOf(score) + " / " + String.valueOf(scoreToWin));
         if(score >= scoreToWin && !isWin) {
