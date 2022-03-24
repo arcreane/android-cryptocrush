@@ -238,7 +238,6 @@ public class GameActivity extends AppCompatActivity {
             intent.putExtra(EXTRA_DISPLACEMENT, displacement);
             startActivity(intent);
         }
-
     }
 
     private void createBoard() {
