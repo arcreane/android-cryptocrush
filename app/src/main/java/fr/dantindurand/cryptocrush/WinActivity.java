@@ -11,9 +11,15 @@ import android.widget.Button;
 import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class WinActivity extends AppCompatActivity {
     int score, displacement;
+
+    @Override
+    public void onBackPressed() {
+        startActivity(new Intent(WinActivity.this, MainActivity.class));
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

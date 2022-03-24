@@ -14,6 +14,7 @@ import android.view.Window;
 import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -43,12 +44,18 @@ public class GameActivity extends AppCompatActivity {
     TextView scoreResult;
     int score = 0;
     boolean isWin = false;
-    int scoreToWin = (int)Math.floor(Math.random()*(200-100+1)+100);
+    //int scoreToWin = (int)Math.floor(Math.random()*(200-100+1)+100);
+    int scoreToWin = 50;
+
     int displacement;
     Vibrator vibrator;
     MediaPlayer beepSoundMP;
     MediaPlayer switchSoundMP;
 
+    @Override
+    public void onBackPressed() {
+        Toast.makeText(GameActivity.this, "Impossible de revenir en arrière", Toast.LENGTH_SHORT).show();
+    }
 
     @SuppressLint({"ClickableViewAccessibility", "SetTextI18n"})
     @Override
@@ -260,8 +267,6 @@ public class GameActivity extends AppCompatActivity {
             coin.add(imageView);
             gridLayout.addView(imageView);
         }
-
-
     }
 
 }
