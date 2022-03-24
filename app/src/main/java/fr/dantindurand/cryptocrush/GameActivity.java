@@ -164,7 +164,6 @@ public class GameActivity extends AppCompatActivity {
                 x = x + noOfBlocks;
                 coin.get(x).setImageResource(notCoin);
                 coin.get(x).setTag(notCoin);
-
             }
         }
         moveDownCoins();
@@ -185,7 +184,6 @@ public class GameActivity extends AppCompatActivity {
                     coin.get(i).setTag(coins[randomColor]);
                     vibrator.vibrate(5);
                 }
-
             }
         }
         for (int i = 0; i < 8; i++) {
@@ -229,7 +227,7 @@ public class GameActivity extends AppCompatActivity {
 
     @SuppressLint("SetTextI18n")
     private void changeScore() {
-        score = score + 3;
+        if(displacement > 0)  score = score + 3;
         vibrator.vibrate(10);
         beepSoundMP.start();
         scoreResult.setText(String.valueOf(score) + " / " + String.valueOf(scoreToWin));

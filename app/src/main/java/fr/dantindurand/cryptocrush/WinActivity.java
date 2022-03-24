@@ -26,10 +26,11 @@ public class WinActivity extends AppCompatActivity {
         score = intent.getIntExtra(GameActivity.EXTRA_SCORE, 0);
         displacement = intent.getIntExtra(GameActivity.EXTRA_DISPLACEMENT, 0);
 
+        genEvaluation(score, displacement);
+
         Button replayBtn = (Button)findViewById(R.id.replay);
         Button leaveBtn = (Button)findViewById(R.id.leave);
 
-        genEvaluation(score, displacement);
 
         replayBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -54,7 +55,6 @@ public class WinActivity extends AppCompatActivity {
         TextView textDisplacement = (TextView)findViewById(R.id.displacement);
 
         GridLayout gridLayout = findViewById(R.id.starsGrid);
-        //gridLayout.setColumnCount(3);
 
         int minDisplacement = Math.round(score / 3);
 
@@ -86,8 +86,5 @@ public class WinActivity extends AppCompatActivity {
             star2.setImageResource(R.drawable.empty_star);
             star3.setImageResource(R.drawable.empty_star);
         }
-
-
-
     }
 }
