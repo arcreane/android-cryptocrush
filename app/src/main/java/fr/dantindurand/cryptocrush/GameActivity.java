@@ -87,11 +87,8 @@ public class GameActivity extends AppCompatActivity {
                 void onSwipeLeft() {
                     super.onSwipeLeft();
                     switchSoundMP.start();
-
                     coinToBeDragged = imageView.getId();
                     coinToBeReplaced = coinToBeDragged - 1;
-
-
                     moveCoinAnimation("left");
                     setTimeout(() -> coinInterchange(), 300);
 
