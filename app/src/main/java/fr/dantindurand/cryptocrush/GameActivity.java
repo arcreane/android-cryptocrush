@@ -9,8 +9,10 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Vibrator;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.animation.TranslateAnimation;
 import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -40,7 +42,7 @@ public class GameActivity extends AppCompatActivity {
     int coinToBeDragged, coinToBeReplaced;
     int notCoin = R.drawable.transparent;
     Handler mHandler;
-    int interval = 100;
+    int interval = 300;
     TextView scoreResult;
     int score = 0;
     boolean isWin = false;
@@ -85,9 +87,13 @@ public class GameActivity extends AppCompatActivity {
                 void onSwipeLeft() {
                     super.onSwipeLeft();
                     switchSoundMP.start();
+
                     coinToBeDragged = imageView.getId();
                     coinToBeReplaced = coinToBeDragged - 1;
-                    coinInterchange();
+
+
+                    moveCoinAnimation("left");
+                    setTimeout(() -> coinInterchange(), 300);
 
                 }
 
@@ -97,7 +103,8 @@ public class GameActivity extends AppCompatActivity {
                     switchSoundMP.start();
                     coinToBeDragged = imageView.getId();
                     coinToBeReplaced = coinToBeDragged + 1;
-                    coinInterchange();
+                    moveCoinAnimation("right");
+                    setTimeout(() -> coinInterchange(), 300);
                 }
 
                 @Override
@@ -106,7 +113,8 @@ public class GameActivity extends AppCompatActivity {
                     switchSoundMP.start();
                     coinToBeDragged = imageView.getId();
                     coinToBeReplaced = coinToBeDragged - noOfBlocks;
-                    coinInterchange();
+                    moveCoinAnimation("top");
+                    setTimeout(() -> coinInterchange(), 300);
                 }
 
                 @Override
@@ -115,7 +123,8 @@ public class GameActivity extends AppCompatActivity {
                     switchSoundMP.start();
                     coinToBeDragged = imageView.getId();
                     coinToBeReplaced = coinToBeDragged + noOfBlocks;
-                    coinInterchange();
+                    moveCoinAnimation("bottom");
+                    setTimeout(() -> coinInterchange(), 300);
                 }
             });
         }
@@ -181,16 +190,22 @@ public class GameActivity extends AppCompatActivity {
         List<Integer> list = Arrays.asList(firstRow);
         for (int i = 55; i >= 0; i--) {
             if( (int) coin.get(i + noOfBlocks).getTag() == notCoin) {
+                TranslateAnimation animationDown = new TranslateAnimation(0, 0, 0, noOfBlocks);
+                animationDown.setDuration(300);
+                animationDown.restrictDuration(300);
+                animationDown.setFillAfter(true);
+                coin.get(i + noOfBlocks).startAnimation(animationDown);
+
                 coin.get(i + noOfBlocks).setImageResource((int) coin.get(i).getTag());
                 coin.get(i + noOfBlocks).setTag(coin.get(i).getTag());
                 coin.get(i).setImageResource(notCoin);
                 coin.get(i).setTag(notCoin);
-                if(list.contains(i) && (int) coin.get(i).getTag() == notCoin) {
+               /* if(list.contains(i) && (int) coin.get(i).getTag() == notCoin) {
                     int randomColor = (int) Math.floor(Math.random() * coins.length);
                     coin.get(i).setImageResource(coins[randomColor]);
                     coin.get(i).setTag(coins[randomColor]);
                     vibrator.vibrate(5);
-                }
+                }*/
             }
         }
         for (int i = 0; i < 8; i++) {
@@ -222,14 +237,34 @@ public class GameActivity extends AppCompatActivity {
     }
 
     private void coinInterchange() {
+
+
+        System.out.println("first " + coin.get(coinToBeDragged).getTag());
+        System.out.println("first2 " + coin.get(coinToBeReplaced).getTag());
+
         int background = (int) coin.get(coinToBeReplaced).getTag();
         int background1 = (int) coin.get(coinToBeDragged).getTag();
+
         coin.get(coinToBeDragged).setImageResource(background);
         coin.get(coinToBeReplaced).setImageResource(background1);
         coin.get(coinToBeDragged).setTag(background);
         coin.get(coinToBeReplaced).setTag(background1);
         displacement = displacement + 1;
         vibrator.vibrate(5);
+        /*
+        System.out.println("second " + coin.get(coinToBeDragged).getTag());
+        System.out.println("second " + coin.get(coinToBeReplaced).getTag());
+
+        System.out.println("left " + coin.get(coinToBeReplaced - 1).getTag());
+        //System.out.println(coin.get(coinToBeReplaced - 1).getTag().equals(coin.get(coinToBeDragged).getTag()));
+        System.out.println("right " + coin.get(coinToBeReplaced + 1).getTag());
+        //System.out.println(coin.get( coinToBeReplaced + 1 ).getTag().equals(coin.get(coinToBeDragged).getTag()));
+        System.out.println("bottom " + coin.get(coinToBeReplaced - noOfBlocks).getTag());
+        //System.out.println(coin.get( coinToBeReplaced - noOfBlocks ).getTag().equals(coin.get(coinToBeDragged).getTag()));
+        System.out.println("top " + coin.get(coinToBeReplaced + noOfBlocks).getTag());
+        //System.out.println(coin.get(coinToBeReplaced + noOfBlocks).getTag().equals(coin.get(coinToBeDragged).getTag()));
+*/
+
     }
 
     @SuppressLint("SetTextI18n")
@@ -267,6 +302,60 @@ public class GameActivity extends AppCompatActivity {
             coin.add(imageView);
             gridLayout.addView(imageView);
         }
+    }
+
+    private void moveCoinAnimation(String to) {
+        TranslateAnimation animationToBeDragged = null;
+        TranslateAnimation animationToBeReplaced = null;
+
+        switch (to) {
+            case "left":
+                animationToBeDragged = new TranslateAnimation(0, -widthOfBlock, 0, 0);
+                animationToBeReplaced = new TranslateAnimation(0, widthOfBlock, 0, 0);
+                break;
+            case "right":
+                animationToBeDragged = new TranslateAnimation(0, widthOfBlock, 0, 0);
+                animationToBeReplaced = new TranslateAnimation(0, -widthOfBlock, 0, 0);
+                break;
+            case "top":
+                animationToBeDragged = new TranslateAnimation(0, 0, 0, -widthOfBlock);
+                animationToBeReplaced = new TranslateAnimation(0, 0, 0, widthOfBlock);
+                break;
+            case "bottom":
+                animationToBeDragged = new TranslateAnimation(0, 0, 0, widthOfBlock);
+                animationToBeReplaced = new TranslateAnimation(0, 0, 0, -widthOfBlock);
+                break;
+        }
+
+        animationToBeDragged.setDuration(300);
+        animationToBeDragged.restrictDuration(300);
+        animationToBeDragged.setFillAfter(true);
+        coin.get(coinToBeDragged).startAnimation(animationToBeDragged);
+
+
+        animationToBeReplaced.setDuration(300);
+        animationToBeReplaced.restrictDuration(300);
+
+        animationToBeReplaced.setFillAfter(true);
+        coin.get(coinToBeReplaced).startAnimation(animationToBeReplaced);
+
+        setTimeout(() -> {
+            coin.get(coinToBeDragged).clearAnimation();
+            coin.get(coinToBeReplaced).clearAnimation();
+        }, 300);
+
+    }
+
+    public static void setTimeout(Runnable runnable, int delay){
+        new Thread(() -> {
+            try {
+                Thread.sleep(delay);
+                runnable.run();
+            }
+            catch (Exception e){
+                System.err.println(e);
+            }
+        }).start();
     }
 
 }
