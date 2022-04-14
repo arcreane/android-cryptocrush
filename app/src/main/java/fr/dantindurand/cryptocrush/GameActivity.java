@@ -44,6 +44,7 @@ public class GameActivity extends AppCompatActivity {
     Handler mHandler;
     int interval = 300;
     TextView scoreResult;
+    TextView displacementText;
     int score = 0;
     boolean isWin = false;
     //int scoreToWin = (int)Math.floor(Math.random()*(200-100+1)+100);
@@ -76,6 +77,8 @@ public class GameActivity extends AppCompatActivity {
         widthOfScreen = displayMetrics.widthPixels;
         int heightOfScreen = displayMetrics.heightPixels;
 
+        displacementText = findViewById(R.id.displacement_counter);
+        displacementText.setText("Déplacements : 0");
 
         beepSoundMP = MediaPlayer.create(this, R.raw.beep_sound_effect);
         switchSoundMP = MediaPlayer.create(this, R.raw.whoosh_sound_effect);
@@ -90,6 +93,8 @@ public class GameActivity extends AppCompatActivity {
                     coinToBeDragged = imageView.getId();
                     coinToBeReplaced = coinToBeDragged - 1;
                     moveCoinAnimation("left");
+
+                    displacementText.setText("Déplacements : " + String.valueOf(displacement+1));
                     setTimeout(() -> coinInterchange(), 300);
 
                 }
@@ -101,6 +106,7 @@ public class GameActivity extends AppCompatActivity {
                     coinToBeDragged = imageView.getId();
                     coinToBeReplaced = coinToBeDragged + 1;
                     moveCoinAnimation("right");
+                    displacementText.setText("Déplacements : " + String.valueOf(displacement+1));
                     setTimeout(() -> coinInterchange(), 300);
                 }
 
@@ -111,6 +117,7 @@ public class GameActivity extends AppCompatActivity {
                     coinToBeDragged = imageView.getId();
                     coinToBeReplaced = coinToBeDragged - noOfBlocks;
                     moveCoinAnimation("top");
+                    displacementText.setText("Déplacements : " + String.valueOf(displacement+1));
                     setTimeout(() -> coinInterchange(), 300);
                 }
 
@@ -121,6 +128,7 @@ public class GameActivity extends AppCompatActivity {
                     coinToBeDragged = imageView.getId();
                     coinToBeReplaced = coinToBeDragged + noOfBlocks;
                     moveCoinAnimation("bottom");
+                    displacementText.setText("Déplacements : " + String.valueOf(displacement+1));
                     setTimeout(() -> coinInterchange(), 300);
                 }
             });
@@ -197,12 +205,6 @@ public class GameActivity extends AppCompatActivity {
                 coin.get(i + noOfBlocks).setTag(coin.get(i).getTag());
                 coin.get(i).setImageResource(notCoin);
                 coin.get(i).setTag(notCoin);
-               /* if(list.contains(i) && (int) coin.get(i).getTag() == notCoin) {
-                    int randomColor = (int) Math.floor(Math.random() * coins.length);
-                    coin.get(i).setImageResource(coins[randomColor]);
-                    coin.get(i).setTag(coins[randomColor]);
-                    vibrator.vibrate(5);
-                }*/
             }
         }
         for (int i = 0; i < 8; i++) {
@@ -247,21 +249,8 @@ public class GameActivity extends AppCompatActivity {
         coin.get(coinToBeDragged).setTag(background);
         coin.get(coinToBeReplaced).setTag(background1);
         displacement = displacement + 1;
+
         vibrator.vibrate(5);
-        /*
-        System.out.println("second " + coin.get(coinToBeDragged).getTag());
-        System.out.println("second " + coin.get(coinToBeReplaced).getTag());
-
-        System.out.println("left " + coin.get(coinToBeReplaced - 1).getTag());
-        //System.out.println(coin.get(coinToBeReplaced - 1).getTag().equals(coin.get(coinToBeDragged).getTag()));
-        System.out.println("right " + coin.get(coinToBeReplaced + 1).getTag());
-        //System.out.println(coin.get( coinToBeReplaced + 1 ).getTag().equals(coin.get(coinToBeDragged).getTag()));
-        System.out.println("bottom " + coin.get(coinToBeReplaced - noOfBlocks).getTag());
-        //System.out.println(coin.get( coinToBeReplaced - noOfBlocks ).getTag().equals(coin.get(coinToBeDragged).getTag()));
-        System.out.println("top " + coin.get(coinToBeReplaced + noOfBlocks).getTag());
-        //System.out.println(coin.get(coinToBeReplaced + noOfBlocks).getTag().equals(coin.get(coinToBeDragged).getTag()));
-*/
-
     }
 
     @SuppressLint("SetTextI18n")
